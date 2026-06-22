@@ -34,6 +34,18 @@ if (!EMAIL_USER) {
   throw new Error("EMAIL_USER environment variable is not set");
 }
 
+if (!process.env.CLOUDINARY_CLOUD_NAME) {
+  throw new Error("CLOUDINARY_CLOUD_NAME environment variable is not set");
+}
+
+if (!process.env.CLOUDINARY_API_KEY) {
+  throw new Error("CLOUDINARY_API_KEY environment variable is not set");
+}
+
+if (!process.env.CLOUDINARY_API_SECRET) {
+  throw new Error("CLOUDINARY_API_SECRET environment variable is not set");
+}
+
 const envConfig = {
   PORT: PORT,
   MONGODB_URI: MONGODB_URI,
@@ -42,6 +54,9 @@ const envConfig = {
   CLIENT_SECRET: CLIENT_SECRET,
   REFRESH_TOKEN: REFRESH_TOKEN,
   EMAIL_USER: EMAIL_USER,
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
 };
 
 module.exports = envConfig;

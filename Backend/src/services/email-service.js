@@ -1,4 +1,4 @@
-const envConfig = require("../config/env-config")
+const envConfig = require("../config/env-config");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -50,5 +50,19 @@ module.exports.callSendEmail = async (email, otp) => {
             <p>If you did not request this, please ignore this email.</p>
         </div>
         `;
+  return await sendEmail(to, subject, text, html);
+};
+
+module.exports.sendOrderEmail = async (email, orderId, name) => {
+  const to = email;
+  const subject = "Order Confirmation";
+  const text = `Hello ${name}, your order #${orderId} has been confirmed.`;
+  const html = `
+        <div style="font-family: Arial, sans-serif;">
+            <h2>Order Confirmation</h2>
+            <p>Your order #${orderId} has been confirmed.</p>
+        </div>
+        `;
+
   return await sendEmail(to, subject, text, html);
 };
