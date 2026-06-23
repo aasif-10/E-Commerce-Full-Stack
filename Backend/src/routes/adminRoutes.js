@@ -32,11 +32,11 @@ router.get("/products/:id", isLoggedIn, isAdmin, getProductById);
 
 /**
  * @description Create a new product (Admin only)
- * @route POST /api/admin/product
+ * @route POST /api/admin/products
  * @access Private (Admin)
  */
 router.post(
-  "/product",
+  "/products",
   isLoggedIn,
   isAdmin,
   upload.single("image"),
@@ -49,7 +49,7 @@ router.post(
  * @access Private (Admin)
  */
 router.patch(
-  "/product/:id",
+  "/products/:id",
   isLoggedIn,
   isAdmin,
   upload.single("image"),
@@ -58,7 +58,7 @@ router.patch(
 
 /**
  * @description Delete a product by ID (Admin only)
- * @route DELETE /api/admin/product/:id
+ * @route DELETE /api/admin/products/:id
  * @access Private (Admin)
  */
 router.delete("/product/:id", isLoggedIn, isAdmin, deleteProduct);
