@@ -1,0 +1,40 @@
+/* ─────────────────────────────────────────────────────────────────
+   Auth — Centered card layout (no image)
+   ───────────────────────────────────────────────────────────────── */
+
+.auth-center-root {
+  min-height: calc(100vh - 64px);
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+.auth-center-card {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 48px 52px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.auth-center-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #000;
+  text-decoration: none;
+  margin-bottom: 36px;
+}
+
+@media (max-width: 560px) {
+  .auth-center-card {
+    padding: 36px 24px;
+  }
+}
