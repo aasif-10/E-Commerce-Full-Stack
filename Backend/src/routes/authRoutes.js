@@ -8,6 +8,7 @@ const {
   logout,
   verifyOtp,
   getMe,
+  genOtp,
 } = require("../controllers/authControllers");
 const { isLoggedIn } = require("../middlewares/isLoggedIn");
 const router = express.Router();
@@ -53,4 +54,12 @@ router.post("/verify-otp", verifyOtp);
  * @access: Private (requires authentication)
  */
 router.get("/get-me", isLoggedIn, getMe);
+
+/**
+ * @description: Generate OTP route to send an OTP to the user's email for verification
+ * @route POST /api/auth/generate-otp
+ * @access: Public
+ */
+router.post("/generate-otp", genOtp);
+
 module.exports = router;

@@ -21,6 +21,11 @@
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
+/* narrower variant for OTP page */
+.auth-center-card--narrow {
+  max-width: 420px;
+}
+
 .auth-center-logo {
   display: flex;
   align-items: center;
@@ -33,8 +38,105 @@
   margin-bottom: 36px;
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   OTP EMAIL ICON
+   ───────────────────────────────────────────────────────────────── */
+.otp-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: #f5f5f5;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  border: 1px solid #e5e5e5;
+}
+
+.otp-icon {
+  width: 28px;
+  height: 28px;
+  color: #111;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   OTP FORM
+   ───────────────────────────────────────────────────────────────── */
+.otp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Single OTP Input */
+.otp-single-input {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-align: center;
+  padding: 16px 20px;
+  /* Push the letter-spacing offset to keep it centered */
+  padding-left: calc(20px + 0.35em);
+}
+
+.otp-single-input::placeholder {
+  color: #d0d0d0;
+  letter-spacing: 0.35em;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   RESEND ROW
+   ───────────────────────────────────────────────────────────────── */
+.otp-resend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -4px;
+}
+
+.otp-timer {
+  font-size: 0.8125rem;
+  color: #6b6b6b;
+}
+
+.otp-timer-val {
+  font-weight: 600;
+  color: #111;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.otp-resend-btn {
+  background: none;
+  border: none;
+  font-family: "Inter", sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.otp-resend-btn:hover {
+  border-color: #000;
+}
+
+/* ── responsive ── */
 @media (max-width: 560px) {
   .auth-center-card {
     padding: 36px 24px;
   }
+
+  .otp-input {
+    width: 44px;
+    height: 52px;
+    font-size: 1.25rem;
+  }
+
+  .otp-inputs {
+    gap: 7px;
+  }
 }
+

@@ -86,13 +86,6 @@ module.exports.login = async (req, res) => {
       });
     }
 
-    if (!userExist.verified) {
-      return res.status(400).json({
-        success: false,
-        message: "Please verify your email before logging in",
-      });
-    }
-
     const token = jwt.sign({ userId: userExist._id }, process.env.JWT_SECRET, {
       expiresIn: "3d",
     });
@@ -131,6 +124,25 @@ module.exports.logout = (req, res) => {
       message: "Server error. Please try again later.",
     });
   }
+};
+
+module.exports.genOtp = async (req, res) => {
+  const { email } = req.body;
+  const otp = createOtp();
+  const result = await callSendEmail(email, otp);
+
+  if (!result) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send verification email",
+    });
+  }
+
+  const user = await userModel.findOneAndUpdate({ email: email }, { otp: otp });
+  res.status(200).json({
+    success: true,
+    message: "OTP sent successfully",
+  });
 };
 
 module.exports.verifyOtp = async (req, res) => {

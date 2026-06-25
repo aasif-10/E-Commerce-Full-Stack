@@ -232,8 +232,31 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   FORM EXTRAS
+   FORM EXTRAS & ERRORS
    ───────────────────────────────────────────────────────────────── */
+.auth-error-msg {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  border: 1px solid #fca5a5;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.4;
+}
+
+.auth-error-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+
 .auth-options {
   display: flex;
   align-items: center;
@@ -291,19 +314,58 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
   transition: background var(--a-dur) var(--a-ease),
               color var(--a-dur) var(--a-ease),
-              transform var(--a-dur) var(--a-ease);
+              transform var(--a-dur) var(--a-ease),
+              opacity var(--a-dur) var(--a-ease);
 }
 
-.auth-submit-btn:hover {
+.auth-submit-btn:hover:not(:disabled) {
   background: var(--a-white);
   color: var(--a-black);
   transform: translateY(-2px);
 }
 
-.auth-submit-btn:active {
+.auth-submit-btn:active:not(:disabled) {
   transform: translateY(0);
+}
+
+/* disabled / loading state */
+.auth-submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+  transform: none;
+}
+
+/* spinner */
+@keyframes auth-spin {
+  to { transform: rotate(360deg); }
+}
+
+.auth-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: auth-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* when button is in hover-inverted state during load, keep spinner dark */
+.auth-submit-btn:disabled .auth-spinner {
+  border-color: rgba(255, 255, 255, 0.25);
+  border-top-color: #ffffff;
+}
+
+.auth-btn-label {
+  display: inline-flex;
+  align-items: center;
 }
 
 /* ─────────────────────────────────────────────────────────────────

@@ -21,13 +21,6 @@ module.exports.isLoggedIn = async (req, res, next) => {
       });
     }
 
-    if (!user.verified) {
-      return res.status(401).json({
-        success: false,
-        message:
-          "Unauthorized. Please verify your email to access this resource.",
-      });
-    }
     req.user = user;
     next();
   } catch (err) {

@@ -1,13 +1,39 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "../style/shop.css";
+import { useAuth } from "../../auth/hooks/useAuth";
+import { useEffect, useState } from "react";
 
 const PRODUCTS = [
-  { id: 1, name: "Classic Timepiece", category: "Accessories", price: "$249", tag: "Best Seller" },
-  { id: 2, name: "Urban Runner", category: "Footwear", price: "$189", tag: "New" },
-  { id: 3, name: "Sport Elite", category: "Footwear", price: "$219", tag: "Limited" },
+  {
+    id: 1,
+    name: "Classic Timepiece",
+    category: "Accessories",
+    price: "$249",
+    tag: "Best Seller",
+  },
+  {
+    id: 2,
+    name: "Urban Runner",
+    category: "Footwear",
+    price: "$189",
+    tag: "New",
+  },
+  {
+    id: 3,
+    name: "Sport Elite",
+    category: "Footwear",
+    price: "$219",
+    tag: "Limited",
+  },
   { id: 4, name: "Leather Tote", category: "Bags", price: "$159", tag: "Sale" },
   { id: 5, name: "Linen Blazer", category: "Men", price: "$329", tag: "New" },
-  { id: 6, name: "Silk Midi Dress", category: "Women", price: "$279", tag: "Trending" },
+  {
+    id: 6,
+    name: "Silk Midi Dress",
+    category: "Women",
+    price: "$279",
+    tag: "Trending",
+  },
   { id: 7, name: "Canvas Backpack", category: "Bags", price: "$135", tag: "" },
   { id: 8, name: "Wool Overcoat", category: "Men", price: "$499", tag: "New" },
 ];
@@ -23,9 +49,34 @@ const ProductIcon = () => (
 );
 
 const ProductList = () => {
+  const { isVerified, handleGetMe, loading } = useAuth();
+  const [initialCheck, setInitialCheck] = useState(true);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        await handleGetMe();
+      } finally {
+        setInitialCheck(false);
+      }
+    };
+    checkUser();
+  }, []);
+
+  if (loading || initialCheck) {
+    return (
+      <div className="page" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
+
+  if (!isVerified) {
+    return <Navigate to={"/auth/verify"} />;
+  }
+
   return (
     <div className="page">
-
       {/* Header */}
       <div className="page-header">
         <p className="page-eyebrow">Explore</p>
@@ -36,7 +87,13 @@ const ProductList = () => {
       {/* Toolbar */}
       <div className="products-toolbar">
         <div className="products-search-wrap">
-          <svg className="products-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            className="products-search-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
@@ -64,11 +121,17 @@ const ProductList = () => {
       {/* Grid */}
       <div className="products-grid">
         {PRODUCTS.map((p) => (
-          <Link to={`/products/${p.id}`} key={p.id} style={{ textDecoration: "none" }}>
+          <Link
+            to={`/products/${p.id}`}
+            key={p.id}
+            style={{ textDecoration: "none" }}
+          >
             <div className="pcard" id={`pcard-${p.id}`}>
               <div className="pcard-img-wrap">
                 <ProductIcon className="pcard-placeholder" />
-                {p.tag && <span className="pcard-tag tag tag-dark">{p.tag}</span>}
+                {p.tag && (
+                  <span className="pcard-tag tag tag-dark">{p.tag}</span>
+                )}
               </div>
               <div className="pcard-body">
                 <p className="pcard-name">{p.name}</p>
@@ -80,14 +143,15 @@ const ProductList = () => {
                     id={`add-to-cart-${p.id}`}
                     onClick={(e) => e.preventDefault()}
                     aria-label="Add to cart"
-                  >+</button>
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             </div>
           </Link>
         ))}
       </div>
-
     </div>
   );
 };
