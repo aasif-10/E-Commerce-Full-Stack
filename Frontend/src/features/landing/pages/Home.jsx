@@ -92,7 +92,7 @@ const Home = () => {
         <div className="lp-stat-divider" />
         <div className="lp-stat">
           <span className="lp-stat-num">Free</span>
-          <span className="lp-stat-label">Shipping Over $50</span>
+          <span className="lp-stat-label">Shipping Over ₹50</span>
         </div>
       </section>
 
@@ -160,28 +160,28 @@ const Home = () => {
               img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&auto=format&fit=crop",
               tag: "Best Seller",
               name: "Classic Timepiece",
-              price: "$249",
+              price: "₹249",
             },
             {
               id: "prod-2",
               img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format&fit=crop",
               tag: "New",
               name: "Urban Runner",
-              price: "$189",
+              price: "₹189",
             },
             {
               id: "prod-3",
               img: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&auto=format&fit=crop",
               tag: "Limited",
               name: "Sport Elite",
-              price: "$219",
+              price: "₹219",
             },
             {
               id: "prod-4",
               img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&auto=format&fit=crop",
               tag: "Sale",
               name: "Leather Tote",
-              price: "$159",
+              price: "₹159",
             },
           ].map((p) => (
             <div className="lp-product-card" id={p.id} key={p.id}>

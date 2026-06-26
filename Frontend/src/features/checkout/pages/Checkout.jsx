@@ -10,9 +10,9 @@ const ItemIcon = () => (
 );
 
 const MINI_ITEMS = [
-  { id: 1, name: "Classic Timepiece", meta: "One Size · ×1", price: "$249" },
-  { id: 2, name: "Urban Runner", meta: "Size 42 · ×2", price: "$378" },
-  { id: 6, name: "Silk Midi Dress", meta: "Size M · ×1", price: "$279" },
+  { id: 1, name: "Classic Timepiece", meta: "One Size · ×1", price: "₹249" },
+  { id: 2, name: "Urban Runner", meta: "Size 42 · ×2", price: "₹378" },
+  { id: 6, name: "Silk Midi Dress", meta: "Size M · ×1", price: "₹279" },
 ];
 
 const Checkout = () => {
@@ -115,7 +115,7 @@ const Checkout = () => {
                   <p className="pay-option-label">Express Shipping</p>
                   <p className="pay-option-sub">2–3 business days</p>
                 </div>
-                <span className="pay-option-icon">$12</span>
+                <span className="pay-option-icon">₹12</span>
               </label>
               <label className="pay-option" id="delivery-overnight">
                 <input type="radio" name="delivery" />
@@ -123,7 +123,7 @@ const Checkout = () => {
                   <p className="pay-option-label">Overnight</p>
                   <p className="pay-option-sub">Next business day</p>
                 </div>
-                <span className="pay-option-icon">$28</span>
+                <span className="pay-option-icon">₹28</span>
               </label>
             </div>
           </div>
@@ -175,7 +175,7 @@ const Checkout = () => {
           </div>
 
           <button className="btn btn-solid btn-lg btn-full" id="place-order-btn">
-            Place Order — $978
+            Place Order — ₹978
           </button>
 
           <p style={{ fontSize: ".78rem", color: "#aaa", textAlign: "center", marginTop: 12 }}>
@@ -202,10 +202,10 @@ const Checkout = () => {
           ))}
 
           <div className="checkout-sum-rows">
-            <div className="checkout-sum-row"><span>Subtotal</span><span>$906</span></div>
+            <div className="checkout-sum-row"><span>Subtotal</span><span>₹906</span></div>
             <div className="checkout-sum-row"><span>Shipping</span><span>Free</span></div>
-            <div className="checkout-sum-row"><span>Tax (8%)</span><span>$72</span></div>
-            <div className="checkout-sum-row total"><span>Total</span><span>$978</span></div>
+            <div className="checkout-sum-row"><span>Tax (8%)</span><span>₹72</span></div>
+            <div className="checkout-sum-row total"><span>Total</span><span>₹978</span></div>
           </div>
 
           <Link to="/cart" style={{ display: "block", marginTop: 16 }}>

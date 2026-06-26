@@ -45,12 +45,12 @@ module.exports.getCartItems = async (req, res) => {
   try {
     const cartItems = await cartModel
       .findOne({ user: req.user._id })
-      .populate("items.product", "name price description imageUrl");
+      .populate("items.product");
 
     if (!cartItems) {
       return res.status(404).json({ message: "Cart not found" });
     }
-    return res.status(200).json(cartItems);
+    return res.status(200).json({ cartItems });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -59,7 +59,8 @@ module.exports.getCartItems = async (req, res) => {
 
 module.exports.updateCartItem = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    const { id: productId } = req.params;
+    const { quantity } = req.body;
     if (!productId || quantity == undefined) {
       return res
         .status(400)
@@ -94,7 +95,7 @@ module.exports.updateCartItem = async (req, res) => {
 
 module.exports.removeCartItem = async (req, res) => {
   try {
-    const { productId } = req.body;
+    const { id: productId } = req.params;
     if (!productId) {
       return res.status(400).json({ message: "Product ID is required" });
     }

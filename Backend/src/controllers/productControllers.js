@@ -1,5 +1,6 @@
 const productModel = require("../model/product-model");
 const cloudinary = require("../config/cloudinary-config");
+const streamifier = require("streamifier");
 
 module.exports.getProducts = async (req, res) => {
   try {
@@ -32,13 +33,12 @@ module.exports.getProductById = async (req, res) => {
 
 module.exports.createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, stock } = req.body;
+    const { name, desc, price, originalPrice, category, stock, tag, rating, reviews, sizes, material, sku } = req.body;
     if (
       !name ||
-      !description ||
-      price === undefined ||
+      !desc ||
       !category ||
-      stock === undefined
+      !sku
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -70,11 +70,18 @@ module.exports.createProduct = async (req, res) => {
 
     const product = await productModel.create({
       name,
-      description,
+      desc,
       price,
+      originalPrice,
       category,
       stock,
       imageUrl,
+      tag,
+      rating,
+      reviews,
+      sizes,
+      material,
+      sku,
     });
 
     res.status(201).json({ product });
@@ -87,13 +94,7 @@ module.exports.createProduct = async (req, res) => {
 module.exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, price, category, stock } = req.body;
-
-    if (Number(price) < 0 || Number(stock) < 0) {
-      return res
-        .status(400)
-        .json({ message: "Price and stock must be non-negative" });
-    }
+    const { name, desc, price, originalPrice, category, stock, tag, rating, reviews, sizes, material, sku } = req.body;
 
     let imageUrl = "";
     if (req.file) {
@@ -119,10 +120,17 @@ module.exports.updateProduct = async (req, res) => {
     }
 
     product.name = name ?? product.name;
-    product.description = description ?? product.description;
+    product.desc = desc ?? product.desc;
     product.price = price ?? product.price;
+    product.originalPrice = originalPrice !== undefined ? originalPrice : product.originalPrice;
     product.category = category ?? product.category;
     product.stock = stock ?? product.stock;
+    product.tag = tag !== undefined ? tag : product.tag;
+    product.rating = rating ?? product.rating;
+    product.reviews = reviews ?? product.reviews;
+    product.sizes = sizes ?? product.sizes;
+    product.material = material ?? product.material;
+    product.sku = sku ?? product.sku;
     if (imageUrl) {
       product.imageUrl = imageUrl;
     }

@@ -1,14 +1,16 @@
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import "../style/shop.css";
 import { useAuth } from "../../auth/hooks/useAuth";
+import { useEffect, useState } from "react";
+import { useProduct } from "../hooks/useProduct";
 
 const PRODUCTS = {
   1: {
     id: 1,
     name: "Classic Timepiece",
     category: "Accessories",
-    price: "$249",
-    originalPrice: "$320",
+    price: "₹249",
+    originalPrice: "₹320",
     tag: "Best Seller",
     rating: 5,
     reviews: 142,
@@ -22,7 +24,7 @@ const PRODUCTS = {
     id: 2,
     name: "Urban Runner",
     category: "Footwear",
-    price: "$189",
+    price: "₹189",
     originalPrice: null,
     tag: "New",
     rating: 4,
@@ -37,7 +39,7 @@ const PRODUCTS = {
     id: 3,
     name: "Sport Elite",
     category: "Footwear",
-    price: "$219",
+    price: "₹219",
     originalPrice: null,
     tag: "Limited",
     rating: 5,
@@ -52,8 +54,8 @@ const PRODUCTS = {
     id: 4,
     name: "Leather Tote",
     category: "Bags",
-    price: "$159",
-    originalPrice: "$220",
+    price: "₹159",
+    originalPrice: "₹220",
     tag: "Sale",
     rating: 5,
     reviews: 213,
@@ -67,7 +69,7 @@ const PRODUCTS = {
     id: 5,
     name: "Linen Blazer",
     category: "Men",
-    price: "$329",
+    price: "₹329",
     originalPrice: null,
     tag: "New",
     rating: 4,
@@ -82,7 +84,7 @@ const PRODUCTS = {
     id: 6,
     name: "Silk Midi Dress",
     category: "Women",
-    price: "$279",
+    price: "₹279",
     originalPrice: null,
     tag: "Trending",
     rating: 5,
@@ -97,7 +99,7 @@ const PRODUCTS = {
     id: 7,
     name: "Canvas Backpack",
     category: "Bags",
-    price: "$135",
+    price: "₹135",
     originalPrice: null,
     tag: "",
     rating: 4,
@@ -112,7 +114,7 @@ const PRODUCTS = {
     id: 8,
     name: "Wool Overcoat",
     category: "Men",
-    price: "$499",
+    price: "₹499",
     originalPrice: null,
     tag: "New",
     rating: 5,
@@ -135,12 +137,89 @@ const BagIcon = () => (
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const product = PRODUCTS[id] || PRODUCTS[1];
 
   const { isVerified } = useAuth();
 
+  const { product, error, setError, handleGetProductById } = useProduct();
+
+  useEffect(() => {
+    const fetchProuduct = async () => {
+      await handleGetProductById(id);
+    };
+
+    fetchProuduct();
+  }, []);
+
   if (!isVerified) {
     return <Navigate to={"/auth/verify"} />;
+  }
+
+  if (error) {
+    return (
+      <div
+        className="page"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "60vh",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "#fee2e2",
+            color: "#b91c1c",
+            padding: "20px 24px",
+            borderRadius: "12px",
+            border: "1px solid #f87171",
+            textAlign: "center",
+            maxWidth: "400px",
+          }}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="48"
+            height="48"
+            stroke="currentColor"
+            strokeWidth="2"
+            fill="none"
+            style={{ marginBottom: "16px" }}
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <h2 style={{ margin: "0 0 8px 0", fontSize: "1.25rem" }}>
+            Oops! Something went wrong
+          </h2>
+          <p style={{ margin: 0 }}>{error}</p>
+          <Link
+            to="/products"
+            className="btn btn-solid"
+            style={{ marginTop: "20px", display: "inline-block" }}
+          >
+            Back to Products
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div
+        className="page"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
+      >
+        <h2>Loading Product...</h2>
+      </div>
+    );
   }
 
   return (
@@ -182,7 +261,7 @@ const ProductDetails = () => {
           </div>
 
           <div className="product-price">
-            {product.price}
+            ₹{product.price}
             {product.originalPrice && (
               <span
                 style={{
@@ -193,7 +272,7 @@ const ProductDetails = () => {
                   fontWeight: 400,
                 }}
               >
-                {product.originalPrice}
+                ₹{product.originalPrice}
               </span>
             )}
           </div>
@@ -280,12 +359,18 @@ const ProductDetails = () => {
               <span
                 className="product-meta-val"
                 style={{
-                  color: product.stock.startsWith("Only")
-                    ? "#e67e22"
-                    : "#27ae60",
+                  color: product.stock === 0
+                    ? "#e74c3c"
+                    : product.stock <= 12
+                      ? "#e67e22"
+                      : "#27ae60",
                 }}
               >
-                {product.stock}
+                {product.stock === 0
+                  ? "Out of Stock"
+                  : product.stock <= 12
+                    ? `Only ${product.stock} left`
+                    : "In Stock"}
               </span>
             </div>
           </div>

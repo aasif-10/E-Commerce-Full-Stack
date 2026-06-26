@@ -6,13 +6,17 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: {
+    desc: {
       type: String,
       required: true,
     },
     price: {
       type: Number,
       required: true,
+    },
+    originalPrice: {
+      type: Number,
+      default: null,
     },
     stock: {
       type: Number,
@@ -23,6 +27,30 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     imageUrl: {
+      type: String,
+      default: "",
+    },
+    tag: {
+      type: String,
+      default: "",
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    reviews: {
+      type: Number,
+      default: 0,
+    },
+    sizes: {
+      type: [String],
+      default: [],
+    },
+    material: {
+      type: String,
+      default: "",
+    },
+    sku: {
       type: String,
       required: true,
     },
