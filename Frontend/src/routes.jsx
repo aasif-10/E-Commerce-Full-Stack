@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import Protected from "./features/auth/components/Protected";
 import Home from "./features/landing/pages/Home";
 import Login from "./features/auth/pages/Login";
 import Register from "./features/auth/pages/Register";
@@ -18,10 +19,12 @@ export const router = createBrowserRouter([
   { path: "/auth/login", element: <Login /> },
   { path: "/auth/register", element: <Register /> },
   { path: "/auth/verify", element: <Verify /> },
-  { path: "/products", element: <><Navbar /><ProductList /><Footer /></> },
-  { path: "/products/:id", element: <><Navbar /><ProductDetails /><Footer /></> },
-  { path: "/cart", element: <><Navbar /><CartItems /><Footer /></> },
+  {
+    path: "/products", element: <><Protected><Navbar /><ProductList /><Footer /></Protected></>
+  },
+  { path: "/products/:id", element: <><Protected><Navbar /><ProductDetails /><Footer /></Protected></> },
+  { path: "/cart", element: <><Protected><Navbar /><CartItems /><Footer /></Protected></> },
   { path: "/checkout", element: <Checkout /> },
-  { path: "/orders", element: <><Navbar /><OrderList /><Footer /></> },
-  { path: "/orders/:id", element: <><Navbar /><OrderDetails /><Footer /></> },
+  { path: "/orders", element: <><Protected><Navbar /><OrderList /><Footer /></Protected></> },
+  { path: "/orders/:id", element: <><Protected><Navbar /><OrderDetails /><Footer /></Protected></> },
 ]);

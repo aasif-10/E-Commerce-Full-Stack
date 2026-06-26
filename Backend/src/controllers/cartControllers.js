@@ -2,7 +2,7 @@ const cartModel = require("../model/cart-model");
 
 module.exports.addToCart = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    const { productId, quantity, size } = req.body;
     if (!productId || quantity == undefined) {
       return res
         .status(400)
@@ -20,16 +20,16 @@ module.exports.addToCart = async (req, res) => {
     if (!cart) {
       await cartModel.create({
         user: userId,
-        items: [{ product: productId, quantity }],
+        items: [{ product: productId, quantity, size }],
       });
     } else {
       const itemIndex = cart.items.findIndex(
-        (item) => item.product.toString() === productId,
+        (item) => item.product.toString() === productId && item.size === size,
       );
       if (itemIndex > -1) {
         cart.items[itemIndex].quantity += quantity;
       } else {
-        cart.items.push({ product: productId, quantity });
+        cart.items.push({ product: productId, quantity, size });
       }
       await cart.save();
     }

@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { CartContext } from "../context/cart-context"
-import { getCartItems, removeCartItem, updateCartItem, } from "../services/cart-api"
+import { getCartItems, removeCartItem, updateCartItem, addToCart } from "../services/cart-api"
 
 
 export const useCart = () => {
@@ -18,6 +18,16 @@ export const useCart = () => {
                 setError(error.response?.data?.message || "Error fetching cart");
                 throw error;
             }
+        }
+    }
+
+    const handleAddToCart = async (productId, quantity, size) => {
+        try {
+            await addToCart(productId, quantity, size);
+            await handleGetCartItems();
+        } catch (error) {
+            setError(error.response?.data?.message || "Error adding to cart");
+            throw error;
         }
     }
 
@@ -47,6 +57,7 @@ export const useCart = () => {
         error,
         setError,
         handleGetCartItems,
+        handleAddToCart,
         handleUpdateCartItem,
         handleRemoveCartItem
     }

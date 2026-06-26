@@ -5,6 +5,15 @@ const api = axios.create({
     withCredentials: true
 })
 
+export const addToCart = async (productId, quantity, size) => {
+    try {
+        const response = await api.post("/api/cart", { productId, quantity, size })
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
 export const getCartItems = async () => {
     try {
         const response = await api.get("/api/cart")

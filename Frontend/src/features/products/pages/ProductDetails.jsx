@@ -3,6 +3,7 @@ import "../style/shop.css";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { useProduct } from "../hooks/useProduct";
+import { useCart } from "../../cart/hooks/useCart";
 
 const PRODUCTS = {
   1: {
@@ -138,17 +139,70 @@ const BagIcon = () => (
 const ProductDetails = () => {
   const { id } = useParams();
 
-  const { isVerified } = useAuth();
+  const { isVerified, handleGetMe, loading } = useAuth();
 
-  const { product, error, setError, handleGetProductById } = useProduct();
+  const { product, error, handleGetProductById } = useProduct();
+
+  const { handleAddToCart, handleGetCartItems } = useCart();
+
+  const [quanity, setQuantity] = useState(1);
+  const [size, setSize] = useState(null);
+  const [adding, setAdding] = useState(false);
+
+  const addToCart = async (e) => {
+    try {
+      e.preventDefault();
+      setAdding(true);
+      await handleAddToCart(id, quanity, size);
+      await handleGetCartItems();
+      setAdding(false);
+    } catch (error) {
+      setAdding(false);
+    }
+  };
+
+  const handleIncrease = (e) => {
+    e.preventDefault();
+    setQuantity(quanity + 1);
+  };
+
+  const handleDecrease = (e) => {
+    e.preventDefault();
+    if (quanity > 1) {
+      setQuantity(quanity - 1);
+    }
+  };
+
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
     const fetchProuduct = async () => {
-      await handleGetProductById(id);
+      try {
+        await handleGetMe();
+        await handleGetProductById(id);
+      } finally {
+        setIsInitializing(false);
+      }
     };
 
     fetchProuduct();
   }, []);
+
+  if (isInitializing || loading) {
+    return (
+      <div
+        className="page"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
+      >
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
 
   if (!isVerified) {
     return <Navigate to={"/auth/verify"} />;
@@ -284,7 +338,14 @@ const ProductDetails = () => {
             <p className="product-option-label">Size</p>
             <div className="product-size-grid">
               {product.sizes.map((s) => (
-                <button key={s} className="size-chip" id={`size-${s}`}>
+                <button
+                  onClick={() => {
+                    setSize(s);
+                  }}
+                  key={s}
+                  className={`size-chip ${size === s ? "selected" : ""}`}
+                  id={`size-${s}`}
+                >
                   {s}
                 </button>
               ))}
@@ -296,14 +357,16 @@ const ProductDetails = () => {
             <p className="product-option-label">Quantity</p>
             <div className="product-qty">
               <button
+                onClick={handleDecrease}
                 className="qty-btn"
                 id="qty-decrease"
                 aria-label="Decrease"
               >
                 −
               </button>
-              <span className="qty-val">1</span>
+              <span className="qty-val">{quanity}</span>
               <button
+                onClick={handleIncrease}
                 className="qty-btn"
                 id="qty-increase"
                 aria-label="Increase"
@@ -316,11 +379,17 @@ const ProductDetails = () => {
           {/* Actions */}
           <div className="product-actions">
             <button
+              onClick={addToCart}
               className="btn btn-solid btn-lg"
               id="add-to-cart-btn"
-              style={{ flex: 1 }}
+              style={{
+                flex: 1,
+                opacity: adding ? 0.7 : 1,
+                cursor: adding ? "not-allowed" : "pointer",
+              }}
+              disabled={adding}
             >
-              Add to Cart
+              {adding ? "Adding..." : "Add to Cart"}
             </button>
             <button
               className="btn btn-outline btn-lg"
@@ -359,11 +428,12 @@ const ProductDetails = () => {
               <span
                 className="product-meta-val"
                 style={{
-                  color: product.stock === 0
-                    ? "#e74c3c"
-                    : product.stock <= 12
-                      ? "#e67e22"
-                      : "#27ae60",
+                  color:
+                    product.stock === 0
+                      ? "#e74c3c"
+                      : product.stock <= 12
+                        ? "#e67e22"
+                        : "#27ae60",
                 }}
               >
                 {product.stock === 0
