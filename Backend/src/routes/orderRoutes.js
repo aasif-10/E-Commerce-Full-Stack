@@ -5,6 +5,7 @@ const {
   createOrder,
   getOrderById,
   getAllOrderByUser,
+  cancelOrder,
 } = require("../controllers/orderController");
 const router = express.Router();
 
@@ -28,5 +29,12 @@ router.get("/:id", isLoggedIn, getOrderById);
  * @access Private
  */
 router.post("/", isLoggedIn, createOrder);
+
+/**
+ * @description Cancel an order
+ * @route DELETE /api/orders/:id - Cancel an order
+ * @access Private
+ */
+router.delete("/:id", isLoggedIn, cancelOrder);
 
 module.exports = router;

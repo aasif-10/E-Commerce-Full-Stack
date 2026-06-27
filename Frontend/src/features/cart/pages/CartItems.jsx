@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../products/style/shop.css";
 import { useCart } from "../hooks/useCart";
 import { useEffect } from "react";
@@ -39,6 +39,7 @@ const ItemIcon = () => (
 );
 
 const CartItems = () => {
+  const navigate = useNavigate();
   const {
     cartItems,
     setCartItems,
@@ -57,7 +58,14 @@ const CartItems = () => {
   if (!cartItems) {
     return (
       <div className="page">
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "60vh",
+          }}
+        >
           <p>Loading cart...</p>
         </div>
       </div>
@@ -116,6 +124,10 @@ const CartItems = () => {
           <div className="cart-list">
             {cartItems.items.map((item) => (
               <div
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/products/${item.product._id}`);
+                }}
                 className="cart-item"
                 key={item.product._id}
                 id={`cart-item-${item.product._id}`}
@@ -126,9 +138,7 @@ const CartItems = () => {
 
                 <div className="cart-item-details">
                   <p className="cart-item-name">{item.product.name}</p>
-                  <p className="cart-item-meta">
-                    {item.product.category}
-                  </p>
+                  <p className="cart-item-meta">{item.product.category}</p>
                   <div className="cart-item-qty">
                     <button
                       className="cqty-btn"
@@ -136,7 +146,10 @@ const CartItems = () => {
                       aria-label="Decrease"
                       onClick={() => {
                         if (item.quantity > 1) {
-                          handleUpdateCartItem(item.product._id, item.quantity - 1);
+                          handleUpdateCartItem(
+                            item.product._id,
+                            item.quantity - 1,
+                          );
                         } else {
                           handleRemoveCartItem(item.product._id);
                         }
@@ -149,7 +162,12 @@ const CartItems = () => {
                       className="cqty-btn"
                       id={`inc-${item.product._id}`}
                       aria-label="Increase"
-                      onClick={() => handleUpdateCartItem(item.product._id, item.quantity + 1)}
+                      onClick={() =>
+                        handleUpdateCartItem(
+                          item.product._id,
+                          item.quantity + 1,
+                        )
+                      }
                     >
                       +
                     </button>

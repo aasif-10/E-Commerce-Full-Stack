@@ -7,6 +7,7 @@ module.exports.isLoggedIn = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({
         success: false,
+        user: null,
         message: "Unauthorized. Please log in to access this resource.",
       });
     }

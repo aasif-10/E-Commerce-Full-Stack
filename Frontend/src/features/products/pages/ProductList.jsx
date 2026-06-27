@@ -24,8 +24,7 @@ const ProductList = () => {
   const { isVerified, handleGetMe, loading, setLoading } = useAuth();
   const [initialCheck, setInitialCheck] = useState(true);
 
-  const { products, error, handleGetProducts, handleAddToCart } =
-    useProduct();
+  const { products, error, handleGetProducts, handleAddToCart } = useProduct();
   const { handleGetCartItems } = useCart();
 
   const AddToCart = async (productId, quantity) => {
@@ -147,12 +146,11 @@ const ProductList = () => {
       {/* Grid */}
       <div className="products-grid">
         {products.map((p) => (
-          <ProductCard p={p} AddToCart={AddToCart}></ProductCard>
+          <ProductCard p={p} key={p._id} AddToCart={AddToCart}></ProductCard>
         ))}
       </div>
-    </div >
+    </div>
   );
 };
 
 export default ProductList;
-

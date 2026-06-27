@@ -16,7 +16,10 @@ module.exports.getAllOrders = async (req, res) => {
 
 module.exports.getOrderById = async (req, res) => {
   try {
-    const order = await orderModel.findById(req.params.id).populate("user");
+    const order = await orderModel
+      .findById(req.params.id)
+      .populate("user")
+      .populate("products.product");
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -92,9 +95,27 @@ module.exports.updateOrderStatus = async (req, res) => {
 
 module.exports.getAllOrderByUser = async (req, res) => {
   const id = req.user._id;
-  const order = await orderModel.find({ user: id });
-  if (!order) {
+  const orders = await orderModel.find({ user: id });
+  if (!orders) {
     return res.status(404).json({ message: "No orders found for this user" });
   }
-  res.status(200).json({ orders: order });
+  res.status(200).json({ orders: orders });
+};
+
+module.exports.cancelOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const order = await orderModel.findById(id);
+
+    if (order) {
+      await order.deleteOne();
+      return res
+        .status(200)
+        .json({ message: "Order cancelled successfully", order });
+    }
+    return res.status(404).json({ message: "Order not found" });
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };

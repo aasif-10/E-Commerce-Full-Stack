@@ -4,6 +4,7 @@ import { router } from "./routes.jsx";
 import { AuthProvider } from "./features/auth/context/auth-context.jsx";
 import { ProductProvider } from "./features/products/context/product-context.jsx";
 import { CartProvider } from "./features/cart/context/cart-context.jsx";
+import { OrderProvider } from "./features/orders/context/order-context.jsx";
 
 const App = () => {
   return (
@@ -11,7 +12,9 @@ const App = () => {
       <AuthProvider>
         <ProductProvider>
           <CartProvider>
-            <RouterProvider router={router} />
+            <OrderProvider>
+              <RouterProvider router={router} />
+            </OrderProvider>
           </CartProvider>
         </ProductProvider>
       </AuthProvider>

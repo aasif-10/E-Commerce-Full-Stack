@@ -1,17 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const Protected = ({ children }) => {
-  const { handleGetMe, user, loading } = useAuth();
+  const { handleGetMe, user } = useAuth();
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const getMe = async () => {
       await handleGetMe();
+      setLoading(true);
     };
     getMe();
   }, []);
 
-  if (loading) {
+  if (!loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>

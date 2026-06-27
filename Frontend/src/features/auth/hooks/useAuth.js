@@ -51,7 +51,7 @@ export const useAuth = () => {
   const handleLogout = async () => {
     try {
       setLoading(true);
-      const response = await logout();
+      await logout();
       setUser(null);
       setLoading(false);
     } catch (error) {
@@ -93,9 +93,10 @@ export const useAuth = () => {
       setIsVerified(response.user.verified);
       setLoading(false);
     } catch (error) {
+      setUser(null);
+      setIsVerified(false);
       setError(error.response?.data?.message || "An error occurred");
       setLoading(false);
-      throw error;
     }
   };
 
