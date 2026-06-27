@@ -55,7 +55,8 @@ const ProductCard = ({ p, AddToCart }) => {
         >
             <div className="pcard" id={`pcard-${p.id}`}>
                 <div className="pcard-img-wrap">
-                    <ProductIcon className="pcard-placeholder" />
+                    {/* <ProductIcon className="pcard-placeholder" /> */}
+                    <img src={p.imageUrl} alt={p.name} className="pcard-img" />
                     {p.tag && (
                         <span className="pcard-tag tag tag-dark">{p.tag}</span>
                     )}

@@ -3,7 +3,7 @@ const { sendOrderEmail } = require("../services/email-service");
 
 module.exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await orderModel.find().populate("user");
+    const orders = await orderModel.find().populate("user").populate("products.product");
     if (!orders) {
       return res.status(404).json({ message: "No orders found" });
     }
@@ -95,7 +95,7 @@ module.exports.updateOrderStatus = async (req, res) => {
 
 module.exports.getAllOrderByUser = async (req, res) => {
   const id = req.user._id;
-  const orders = await orderModel.find({ user: id });
+  const orders = await orderModel.find({ user: id }).populate("products.product");
   if (!orders) {
     return res.status(404).json({ message: "No orders found for this user" });
   }

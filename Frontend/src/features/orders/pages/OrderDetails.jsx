@@ -197,7 +197,11 @@ const OrderDetails = () => {
               {order.products?.map((item) => (
                 <div className="od-item" key={item.product?._id || Math.random()}>
                   <div className="od-item-thumb">
-                    <PackageIcon />
+                    {item.product?.imageUrl ? (
+                      <img src={item.product.imageUrl} alt={item.product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <PackageIcon />
+                    )}
                   </div>
                   <div className="od-item-info">
                     <p className="od-item-name">{item.product?.name || "Unknown Product"}</p>

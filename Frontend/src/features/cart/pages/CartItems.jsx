@@ -133,7 +133,7 @@ const CartItems = () => {
                 id={`cart-item-${item.product._id}`}
               >
                 <div className="cart-item-thumb">
-                  <ItemIcon />
+                  <img src={item.product.imageUrl} alt={item.product.name} />
                 </div>
 
                 <div className="cart-item-details">
@@ -144,7 +144,8 @@ const CartItems = () => {
                       className="cqty-btn"
                       id={`dec-${item.product._id}`}
                       aria-label="Decrease"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         if (item.quantity > 1) {
                           handleUpdateCartItem(
                             item.product._id,
@@ -162,12 +163,13 @@ const CartItems = () => {
                       className="cqty-btn"
                       id={`inc-${item.product._id}`}
                       aria-label="Increase"
-                      onClick={() =>
+                      onClick={(e) => {
+                        e.stopPropagation();
                         handleUpdateCartItem(
                           item.product._id,
                           item.quantity + 1,
-                        )
-                      }
+                        );
+                      }}
                     >
                       +
                     </button>
@@ -182,7 +184,10 @@ const CartItems = () => {
                     className="cart-remove-btn"
                     id={`remove-${item.product._id}`}
                     aria-label="Remove"
-                    onClick={() => handleRemoveCartItem(item.product._id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveCartItem(item.product._id);
+                    }}
                   >
                     <svg
                       width="16"
@@ -266,7 +271,7 @@ const CartItems = () => {
           </p>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

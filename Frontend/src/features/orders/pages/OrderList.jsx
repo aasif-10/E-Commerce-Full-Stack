@@ -199,7 +199,11 @@ const OrderList = () => {
                   key={i}
                   title={item.product?.name || ""}
                 >
-                  <ItemIcon />
+                  {item.product?.imageUrl ? (
+                    <img src={item.product.imageUrl} alt={item.product.name} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "inherit" }} />
+                  ) : (
+                    <ItemIcon />
+                  )}
                 </div>
               ))}
             </div>

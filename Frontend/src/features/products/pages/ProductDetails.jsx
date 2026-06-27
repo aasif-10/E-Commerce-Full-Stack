@@ -290,7 +290,7 @@ const ProductDetails = () => {
       <div className="product-layout">
         {/* Gallery placeholder */}
         <div className="product-gallery" id="product-gallery">
-          <BagIcon className="product-gallery-icon" />
+          <img src={product.imageUrl} alt={product.name} />
         </div>
 
         {/* Info */}
